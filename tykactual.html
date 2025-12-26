@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>T&K COMPANY C.A - Distribuidores Oficiales Bulova & Citizen</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Lora para cuerpo, Cormorant Garamond para títulos -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Lora:ital@0;1&display=swap" rel="stylesheet">
+    
+    <!-- Swiper.js para carruseles -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    
+    <!-- YouTube IFrame API -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <!-- Resource Preloading -->
+    <link rel="preload" href="https://citizenwatch.widen.net/content/ricpn8vi6d/mp4/ricpn8vi6d.mp4?quality=hd&u=41zuoe" as="video" type="video/mp4">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Lora:ital@0;1&display=swap" as="style">
+
+
+    <style>
+        /* Estilos personalizados para complementar Tailwind */
+        body {
+            font-family: 'Lora', serif; /* Nueva tipografía para el cuerpo */
+            background-color: #0a0a0a;
+            color: #e5e5e5;
+            overflow-x: hidden; /* Prevenir scroll horizontal */
+        }
+
+        h1, h2, h3, .font-title {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        /* Estilo para el video de fondo */
+        .hero-video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+            background-color: #000;
+        }
+
+        .hero-video-container video {
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+        }
+        
+        /* Estilos para carruseles de productos (Marquee) */
+        .product-marquee .swiper-wrapper {
+            transition-timing-function: linear !important;
+        }
+        .product-marquee .swiper-slide {
+            width: auto;
+            height: 350px;
+            background: transparent;
+        }
+        .product-marquee .swiper-slide img {
+             height: 100%;
+            width: auto;
+            object-fit: contain;
+        }
+
+        /* Estilos para la animación de scroll */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        .scroll-animate.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Estilos para la sección de videos full-width */
+        .video-showcase-item {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #000;
+        }
+        .video-showcase-item iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw; /* 16:9 */
+            min-height: 100vh;
+            min-width: 177.77vh; /* 16:9 */
+            transform: translate(-50%, -50%);
+        }
+        .video-title {
+            position: absolute;
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        /* Estilos para el carrusel de banners infinito */
+        .banner-marquee .swiper-wrapper {
+            transition-timing-function: linear !important;
+        }
+        .banner-marquee .swiper-slide {
+            width: auto;
+            height: 200px;
+            background: transparent;
+        }
+        .banner-marquee .swiper-slide img {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+        
+        /* Estilos para la sección "Sobre nosotros" */
+        .about-section {
+            background-image: linear-gradient(rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.9)), url('https://images.pexels.com/photos/325117/pexels-photo-325117.jpeg?auto=compress&cs=tinysrgb&w=1920');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+        }
+
+        /* Estilos para el bloque de narrativa de marca */
+        .narrative-block {
+            position: relative;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            min-height: 500px;
+        }
+        .narrative-block__bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease-out;
+        }
+        .narrative-block:hover .narrative-block__bg {
+            transform: scale(1.05);
+        }
+        .narrative-block__content {
+            position: relative;
+            background: rgba(10,10,10,0.7);
+            backdrop-filter: blur(4px);
+        }
+        
+        /* Estilos para el Header */
+        header.scrolled {
+            background-color: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Estilos para el botón de volver arriba */
+        #back-to-top {
+            transition: opacity 0.3s, transform 0.3s;
+            z-index: 50;
+        }
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.1s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            stroke: #D4AF37;
+        }
+        
+        /* Estilos para animación de texto */
+        .typewriter {
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: .1em solid #D4AF37;
+            animation: typing 3s steps(30, end), blink-caret .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #D4AF37; }
+        }
+        
+        /* FIX RESPONSIVE: Ajuste para el typewriter en móviles */
+        @media (max-width: 640px) {
+            .typewriter {
+                white-space: normal; /* Permite que el texto se divida en varias líneas */
+                border-right: none; /* Oculta el cursor parpadeante */
+                animation: none; /* Desactiva la animación para evitar problemas de renderizado */
+                width: 100%; /* Asegura que ocupe el ancho disponible */
+            }
+        }
+        
+        /* Estilos para el Modal de Contraseña */
+        #password-modal input {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.5);
+        }
+        #password-modal input:focus {
+            border-color: #D4AF37;
+            outline: none;
+        }
+
+    </style>
+</head>
+<body class="bg-black text-gray-200">
+
+    <div class="overflow-x-hidden">
+        <!-- HEADER -->
+        <header id="main-header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+            <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+                <a href="#" class="font-title text-2xl font-bold tracking-wider">T&K</a>
+                
+                <!-- Desktop Menu -->
+                <ul class="hidden md:flex items-center space-x-8">
+                     <li class="relative group">
+                        <span class="hover:text-yellow-400 transition-colors duration-300 flex items-center cursor-pointer py-2">
+                            Proveedores
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </span>
+                        <div class="absolute opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto top-full left-0 bg-black bg-opacity-80 backdrop-blur-md pt-4 pb-2 rounded-lg shadow-xl w-48 transition-opacity duration-300">
+                            <a href="https://www.bulova.com/global/" target="_blank" rel="noopener noreferrer" class="block px-4 py-2 text-gray-300 hover:bg-yellow-400 hover:text-black">Bulova</a>
+                            <a href="https://www.citizenwatch.com/latam/" target="_blank" rel="noopener noreferrer" class="block px-4 py-2 text-gray-300 hover:bg-yellow-400 hover:text-black">Citizen</a>
+                        </div>
+                    </li>
+                    <li><a href="#about" class="hover:text-yellow-400 transition-colors duration-300 py-2">Sobre Nosotros</a></li>
+                    <li><a href="#footer" class="hover:text-yellow-400 transition-colors duration-300 py-2">Contacto</a></li>
+                </ul>
+
+                <!-- Mobile Menu Button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-button">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </nav>
+
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="hidden md:hidden bg-black bg-opacity-95 backdrop-blur-md absolute top-full left-0 w-full">
+                <ul class="flex flex-col items-center space-y-6 py-8">
+                    <li>
+                        <span class="text-white font-bold">Proveedores</span>
+                        <ul class="text-center space-y-4 mt-4">
+                             <li><a href="https://www.bulova.com/global/" target="_blank" rel="noopener noreferrer" class="text-lg hover:text-yellow-400 transition-colors duration-300">Bulova</a></li>
+                             <li><a href="https://www.citizenwatch.com/latam/" target="_blank" rel="noopener noreferrer" class="text-lg hover:text-yellow-400 transition-colors duration-300">Citizen</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#about" class="text-lg hover:text-yellow-400 transition-colors duration-300">Sobre Nosotros</a></li>
+                    <li><a href="#footer" class="text-lg hover:text-yellow-400 transition-colors duration-300">Contacto</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <!-- HERO SECTION -->
+        <section class="relative h-screen flex flex-col items-center justify-center text-center text-white">
+            <div class="hero-video-container">
+                <video autoplay muted loop playsinline>
+                    <source src="https://citizenwatch.widen.net/content/ricpn8vi6d/mp4/ricpn8vi6d.mp4?quality=hd&u=41zuoe" type="video/mp4">
+                    Tu navegador no soporta videos HTML5.
+                </video>
+                <div class="absolute inset-0 bg-black opacity-60"></div>
+            </div>
+            <div class="relative z-10 px-4">
+                <h1 class="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-wider leading-tight mb-4 font-title">T&K COMPANY C.A</h1>
+                <p class="text-lg md:text-2xl font-light tracking-widest uppercase">Distribuidores Oficiales en Venezuela</p>
+                <div class="mt-8 flex justify-center items-center gap-x-8 md:gap-x-12">
+                    <img src="https://i.postimg.cc/65vmq8qJ/2.png" alt="Logo de Bulova" class="h-16 md:h-20">
+                    <img src="https://i.postimg.cc/6px1vB47/3.png" alt="Logo de Citizen" class="h-16 md:h-20">
+                </div>
+            </div>
+        </section>
+
+        <!-- VIDEOS FULL-WIDTH -->
+        <section id="video-showcase">
+            <div class="video-showcase-item">
+                <div id="player1"></div>
+                <h2 class="video-title text-3xl md:text-4xl font-title scroll-animate">La Audacia de la Innovación</h2>
+            </div>
+            <div class="video-showcase-item">
+                <div id="player2"></div>
+                <h2 class="video-title text-3xl md:text-4xl font-title scroll-animate">Precisión en Movimiento</h2>
+            </div>
+            <div class="video-showcase-item">
+                <div id="player3"></div>
+                <h2 class="video-title text-3xl md:text-4xl font-title scroll-animate">El Futuro es Ahora</h2>
+            </div>
+        </section>
+
+        <!-- BANNER MARQUEE -->
+        <section class="banner-marquee bg-black">
+            <div class="swiper-container banner-swiper">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="https://www.calvinbroyles.com/mediap/catalog/brands/banners/CIT-3156_Citizen_-_Lynkem_Banners_-_Aqualand_1500x500.webp" alt="Banner Citizen Aqualand"></div>
+                    <div class="swiper-slide"><img src="https://lucerneluxe.com/wp-content/uploads/2024/04/pf-7f7b6d36-Bulovabanner2-1024x256.jpg" alt="Banner Bulova"></div>
+                    <div class="swiper-slide"><img src="https://api.timehouse.store/public/uploads/brand/brandBannerImage-1741861934275-654901053.webp" alt="Banner Citizen Tsuyosa"></div>
+                    <div class="swiper-slide"><img src="https://lirp.cdn-website.com/2410a955/dms3rep/multi/opt/bulova-watch-banner-1920w.jpg" alt="Banner Bulova Classic"></div>
+                    <div class="swiper-slide"><img src="https://www.shiels.com.au/cdn/shop/collections/Transworld_Feb_Banners_2560x4045_a4a991bc-0393-4732-893f-47c7df68d990.jpg?v=1749084617" alt="Banner Citizen"></div>
+                    <div class="swiper-slide"><img src="http://www.valdostavault.com/wp/wp-content/uploads/2013/08/Bulova-watch-banner-1024x341.jpg" alt="Banner Bulova Vintage"></div>
+                    <div class="swiper-slide"><img src="https://waqt.com/storage/post/large/0EvbgDAm2v0LyWQrvXA9KjOgDNUpeTPvPxWRlfIi.jpg" alt="Banner Bulova"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT T&K SECTION -->
+        <section id="about" class="py-24 px-4 sm:px-6 about-section overflow-hidden">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="scroll-animate">
+                    <p class="text-yellow-400 font-semibold tracking-widest uppercase">Sobre Nosotros</p>
+                    <h2 class="text-3xl sm:text-4xl md:text-5xl font-title text-white my-4"><span class="typewriter">Custodios de un Legado Atemporal</span></h2>
+                    <div class="w-24 h-1 bg-yellow-400 mb-6 mx-auto"></div>
+                    <p class="text-lg text-gray-300 leading-relaxed">
+                        T&K COMPANY C.A es el custodio de un legado atemporal en Venezuela. Somos el nexo exclusivo entre la audaz innovación americana de Bulova y la legendaria precisión japonesa de Citizen. Nuestra misión trasciende la distribución; curamos experiencias y ofrecemos portales a un universo de arte, historia y maestría relojera. Cada pieza en nuestra colección es un juramento de excelencia, un diálogo entre la tradición y la vanguardia.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BULOVA SECTION -->
+        <section id="bulova" class="py-20 px-4 sm:px-6 overflow-hidden" style="background: #0c0c0c;">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-20">
+                     <img src="https://i.postimg.cc/65vmq8qJ/2.png" alt="Logo de Bulova" class="h-20 mx-auto mb-4 scroll-animate">
+                    <h2 class="text-4xl md:text-5xl font-title text-white mb-4 scroll-animate" style="transition-delay: 0.2s;">Historia de Innovación</h2>
+                </div>
+                
+                <div class="narrative-block flex items-center justify-center text-center scroll-animate">
+                    <img src="https://images.pexels.com/photos/280250/pexels-photo-280250.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Maquinaria de reloj Bulova" class="narrative-block__bg">
+                    <div class="narrative-block__content p-6 md:p-16">
+                         <h3 class="text-3xl md:text-4xl font-title text-yellow-400 mb-4">Un Legado de Audacia</h3>
+                         <div class="w-20 h-px bg-yellow-400 my-4 mx-auto"></div>
+                         <p class="max-w-3xl text-lg leading-relaxed text-gray-200">
+                             Desde su fundación en Nueva York, Bulova ha sido un faro de innovación. Liderado por el visionario Joseph Bulova, la marca revolucionó la industria con la producción estandarizada de relojes. Su espíritu pionero culminó con el Accutron, el primer reloj electrónico del mundo, cuya tecnología fue vital para las misiones espaciales de la NASA, consolidando a Bulova como un ícono de la precisión y la audacia americana.
+                         </p>
+                    </div>
+                </div>
+
+                <div class="text-center my-20">
+                    <h3 class="text-3xl md:text-4xl font-title text-white mb-4 scroll-animate">Modelos Icónicos</h3>
+                    <div class="w-20 h-1 bg-yellow-400 mx-auto scroll-animate" style="transition-delay: 0.1s;"></div>
+                </div>
+                <div class="w-full scroll-animate" style="transition-delay: 0.2s;">
+                    <div class="swiper-container product-marquee bulova-swiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><img loading="lazy" src="https://i.postimg.cc/k45q8nsS/98B278.png" alt="Reloj Bulova Curv"></div>
+                            <div class="swiper-slide"><img loading="lazy" src="https://i.postimg.cc/QM1WPqZm/96B440.png" alt="Reloj Bulova Marine Star"></div>
+                            <div class="swiper-slide"><img loading="lazy" src="https://i.postimg.cc/4NyHZGTm/96-K112-BOX-SET-SOLDIER.png" alt="Reloj Bulova Veteran"></div>
+                            <div class="swiper-slide"><img loading="lazy" src="https://i.postimg.cc/d02LntGS/96L306.png" alt="Reloj Bulova Rubaiyat"></div>
+                            <div class="swiper-slide"><img loading="lazy" src="https://i.postimg.cc/SQTjgPzq/97A185.png" alt="Reloj Bulova Sutton"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-12 scroll-animate" style="transition-delay: 0.3s;">
+                    <button data-url="https://drive.google.com/file/d/1UfRNNVxZFkoMfnfhqgSa5EYLyXtGjNPZ/view?usp=drive_link" class="download-button inline-block bg-transparent border border-yellow-400 text-yellow-400 font-semibold py-3 px-8 rounded-lg hover:bg-yellow-400 hover:text-black transition-all duration-300 transform hover:scale-105">
+                        Descargar Catálogo
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CITIZEN SECTION -->
+        <section id="citizen" class="py-20 px-4 sm:px-6 bg-black overflow-hidden">
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-20">
+                    <img src="https://i.postimg.cc/6px1vB47/3.png" alt="Logo de Citizen" class="h-12 mx-auto mb-4 scroll-animate" style="transition-delay: 0.1s;">
+                    <h2 class="text-4xl md:text-5xl font-title text-white mb-4 scroll-animate" style="transition-delay: 0.2s;">Tecnología para Todos</h2>
+                </div>
+                
+                 <div class="narrative-block flex items-center justify-center text-center scroll-animate">
+                    <img src="https://images.pexels.com/photos/1697214/pexels-photo-1697214.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2" alt="Detalle de un reloj Citizen" class="narrative-block__bg">
+                    <div class="narrative-block__content p-6 md:p-16">
+                         <h3 class="text-3xl md:text-4xl font-title text-yellow-400 mb-4">Mejor Comienza Ahora</h3>
+                         <div class="w-20 h-px bg-yellow-400 my-4 mx-auto"></div>
+                         <p class="max-w-3xl text-lg leading-relaxed text-gray-200">
+                             Fundada en 1918 con la visión de crear relojes de alta calidad accesibles para todos. Esta filosofía se materializó con la revolucionaria tecnología Eco-Drive, que convierte cualquier luz en energía, eliminando para siempre la necesidad de baterías. "Better Starts Now" es el impulso constante de Citizen hacia un futuro más brillante y sostenible.
+                         </p>
+                    </div>
+                </div>
+
+                <div class="text-center my-20">
+                    <h3 class="text-3xl md:text-4xl font-title text-white mb-4 scroll-animate">Colección Destacada</h3>
+                    <div class="w-20 h-1 bg-yellow-400 mx-auto scroll-animate" style="transition-delay: 0.1s;"></div>
+                </div>
+                <div class="w-full scroll-animate" style="transition-delay: 0.2s;">
+                    <div class="swiper-container product-marquee citizen-swiper">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide"><img loading="lazy" src="https://i.postimg.cc/PJZJ7Xw7/TSUYOSA.png" alt="Reloj Citizen TSUYOSA automático con esfera turquesa"></div>
+                            <div class="swiper-slide"><img loading="lazy" src="https://i.postimg.cc/1zC8nYSv/Promaster-Navihawk.png" alt="Reloj Citizen Promaster Navihawk con múltiples funciones"></div>
+                            <div class="swiper-slide"><img loading="lazy" src="https://i.postimg.cc/MTnvybKq/Promaster-Skyhawk-A-T.png" alt="Reloj Citizen Promaster Skyhawk A-T radio-controlado"></div>
+                            <div class="swiper-slide"><img loading="lazy" src="https://i.postimg.cc/cHLJd78f/Brycen.png" alt="Reloj Citizen Brycen con cronógrafo y correa de cuero"></div>
+                            <div class="swiper-slide"><img loading="lazy" src="https://i.postimg.cc/d3zQRzN9/Citizen-L-Bianca.png" alt="Reloj de dama Citizen L Bianca con diseño elegante"></div>
+                            <div class="swiper-slide"><img loading="lazy" src="https://i.postimg.cc/252z9qXy/Promaster-Div.png" alt="Reloj de buceo Citizen Promaster Dive con tecnología Eco-Drive"></div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="text-center mt-12 scroll-animate" style="transition-delay: 0.3s;">
+                    <button data-url="https://drive.google.com/file/d/1w-2TnnItkKm4_f5AS09htCxRO4cg3IDL/view?usp=drive_link" class="download-button inline-block bg-transparent border border-yellow-400 text-yellow-400 font-semibold py-3 px-8 rounded-lg hover:bg-yellow-400 hover:text-black transition-all duration-300 transform hover:scale-105">
+                        Descargar Catálogo
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCT MARQUEE -->
+        <section class="py-20 overflow-hidden">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl md:text-5xl font-title text-white mb-4 scroll-animate">Descubra la Colección</h2>
+                <div class="w-24 h-1 bg-yellow-400 mx-auto scroll-animate" style="transition-delay: 0.1s;"></div>
+            </div>
+            <div class="swiper-container product-marquee">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide"><img src="https://i.postimg.cc/PJZJ7Xw7/TSUYOSA.png" alt="Reloj Citizen TSUYOSA"></div>
+                    <div class="swiper-slide"><img src="https://i.postimg.cc/k45q8nsS/98B278.png" alt="Reloj Bulova Curv"></div>
+                    <div class="swiper-slide"><img src="https://i.postimg.cc/1zC8nYSv/Promaster-Navihawk.png" alt="Reloj Citizen Promaster Navihawk"></div>
+                    <div class="swiper-slide"><img src="https://i.postimg.cc/QM1WPqZm/96B440.png" alt="Reloj Bulova Marine Star"></div>
+                    <div class="swiper-slide"><img src="https://i.postimg.cc/MTnvybKq/Promaster-Skyhawk-A-T.png" alt="Reloj Citizen Promaster Skyhawk"></div>
+                    <div class="swiper-slide"><img src="https://i.postimg.cc/4NyHZGTm/96-K112-BOX-SET-SOLDIER.png" alt="Reloj Bulova Veteran"></div>
+                    <div class="swiper-slide"><img src="https://i.postimg.cc/cHLJd78f/Brycen.png" alt="Reloj Citizen Brycen"></div>
+                    <div class="swiper-slide"><img src="https://i.postimg.cc/d02LntGS/96L306.png" alt="Reloj Bulova Rubaiyat"></div>
+                    <div class="swiper-slide"><img src="https://i.postimg.cc/d3zQRzN9/Citizen-L-Bianca.png" alt="Reloj Citizen L Bianca"></div>
+                    <div class="swiper-slide"><img src="https://i.postimg.cc/SQTjgPzq/97A185.png" alt="Reloj Bulova Sutton"></div>
+                    <div class="swiper-slide"><img src="https://i.postimg.cc/252z9qXy/Promaster-Div.png" alt="Reloj Citizen Promaster Dive"></div>
+                    <div class="swiper-slide"><img src="https://i.postimg.cc/L6g4N8pB/98-A324-150-Logo-Hi-Res.png" alt="Reloj Bulova Jet Star"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer id="footer" class="bg-black text-gray-400 py-16 px-6">
+            <div class="max-w-6xl mx-auto text-center">
+                <a href="#" class="font-title text-3xl font-bold tracking-wider mb-6 inline-block text-white">T&K COMPANY C.A</a>
+                <div class="my-8 flex justify-center items-center gap-x-8 md:gap-x-12">
+                    <img src="https://i.postimg.cc/65vmq8qJ/2.png" alt="Logo de Bulova en pie de página" class="h-10 md:h-12">
+                    <img src="https://i.postimg.cc/6px1vB47/3.png" alt="Logo de Citizen en pie de página" class="h-10 md:h-12">
+                </div>
+                <p class="max-w-2xl mx-auto mb-8 text-gray-500">
+                    Ponte en contacto con nosotros para cualquier consulta o para conocer más sobre nuestras colecciones de relojes Bulova y Citizen.
+                </p>
+                <div class="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8 mb-8">
+                    <a href="tel:+582125644230" class="hover:text-yellow-400 transition-colors">+58 212 5644230</a>
+                    <a href="mailto:gamar@tykcompany.com" class="text-yellow-400 hover:text-white transition-colors">gamar@tykcompany.com</a>
+                    <a href="tel:+582125642395" class="hover:text-yellow-400 transition-colors">+58 212 5642395</a>
+                </div>
+                <div class="mt-8 border-t border-gray-700 pt-8 text-sm">
+                    <p class="mb-2">&copy; 2025 T&K Company C.A. - RIF: J-30932604-0</p>
+                    <p>Página web diseñada por <a href="#" class="text-yellow-400 hover:text-white transition-colors">@Lemustech.ve</a></p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- BOTÓN VOLVER ARRIBA -->
+        <button id="back-to-top" class="fixed bottom-8 right-8 w-12 h-12 bg-gray-800 text-white p-3 rounded-full shadow-lg opacity-0 transform translate-y-4 transition-all duration-300 hover:bg-gray-700 hover:scale-110">
+            <svg class="absolute inset-0 w-full h-full" viewBox="0 0 36 36">
+                <circle class="progress-ring__circle" stroke-width="4" fill="transparent" r="16" cx="18" cy="18"/>
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" class="relative h-full w-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+            </svg>
+        </button>
+        
+        <!-- BOTÓN FLOTANTE DE WHATSAPP -->
+        <a href="https://wa.me/584241293287" target="_blank" rel="noopener noreferrer" id="whatsapp-button" class="fixed bottom-8 left-8 bg-green-500 text-white p-3 rounded-full shadow-lg transition-all duration-300 hover:bg-green-600 hover:scale-110">
+            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.886-.001 2.269.654 4.424 1.901 6.22l-1.359 4.957 5.068-1.332z"/></svg>
+        </a>
+        
+        <!-- MODAL DE CONTRASEÑA -->
+        <div id="password-modal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 hidden">
+            <div class="bg-gray-900 rounded-lg shadow-2xl w-11/12 md:w-1/3 p-8 text-center">
+                <h3 class="text-2xl font-title text-white mb-4">Acceso Restringido</h3>
+                <p class="text-gray-400 mb-6">Por favor, ingrese la contraseña para descargar el catálogo.</p>
+                <input type="password" id="password-input" class="w-full p-3 rounded-md text-center mb-4">
+                <p id="password-error" class="text-red-500 text-sm mb-4 h-5"></p>
+                <button id="password-submit" class="w-full bg-yellow-400 text-black font-bold py-3 px-6 rounded-lg hover:bg-yellow-500 transition-all duration-300">Acceder</button>
+                <button id="password-close" class="text-gray-500 hover:text-white mt-4">Cancelar</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        let players = [];
+        const videoData = [
+            { id: 'player1', videoId: 'GbhMzNxF_bc' },
+            { id: 'player2', videoId: '3Ss2jhlNHw0' },
+            { id: 'player3', videoId: 'Zq8dC5eKDNU' }
+        ];
+
+        function onYouTubeIframeAPIReady() {
+            if (!videoData.length) return;
+            videoData.forEach(video => {
+                const player = new YT.Player(video.id, {
+                    height: '100%',
+                    width: '100%',
+                    videoId: video.videoId,
+                    playerVars: {
+                        autoplay: 1, mute: 1, controls: 0, loop: 1, playlist: video.videoId,
+                        modestbranding: 1, showinfo: 0, rel: 0, iv_load_policy: 3
+                    },
+                    events: { 'onReady': onPlayerReady }
+                });
+                players.push({ id: video.id, player: player, isReady: false });
+            });
+        }
+
+        function onPlayerReady(event) {
+            const playerInfo = players.find(p => p.player === event.target);
+            if(playerInfo) playerInfo.isReady = true;
+            event.target.playVideo();
+        }
+
+        function setupVideoObservers() {
+            const videoElements = document.querySelectorAll('.video-showcase-item');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    const playerContainer = entry.target.querySelector('div');
+                    if (playerContainer) {
+                        const playerId = playerContainer.id;
+                        const playerInfo = players.find(p => p.id === playerId);
+                        if (playerInfo && playerInfo.isReady) {
+                            if (entry.isIntersecting) {
+                                playerInfo.player.playVideo();
+                            } else {
+                                playerInfo.player.pauseVideo();
+                            }
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+            videoElements.forEach(el => observer.observe(el));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const marqueeConfig = {
+                loop: true,
+                slidesPerView: 'auto',
+                spaceBetween: 60,
+                freeMode: true,
+                autoplay: {
+                    delay: 1,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true,
+                },
+                speed: 8000,
+            };
+
+            const bulovaSwiper = new Swiper('.bulova-swiper', marqueeConfig);
+            const citizenSwiper = new Swiper('.citizen-swiper', marqueeConfig);
+            const bannerSwiper = new Swiper('.banner-swiper', { ...marqueeConfig, speed: 7000, spaceBetween: 40 });
+            const productMarqueeSwiper = new Swiper('.product-marquee', marqueeConfig);
+
+            const allSwipers = [bulovaSwiper, citizenSwiper, bannerSwiper, productMarqueeSwiper];
+
+            document.addEventListener("visibilitychange", () => {
+              if (document.visibilityState === "visible") {
+                allSwipers.forEach(swiper => {
+                    if (swiper && swiper.autoplay && !swiper.autoplay.running) {
+                        swiper.autoplay.start();
+                    }
+                });
+              } else {
+                allSwipers.forEach(swiper => {
+                    if (swiper && swiper.autoplay && swiper.autoplay.running) {
+                        swiper.autoplay.stop();
+                    }
+                });
+              }
+            });
+
+            const scrollElements = document.querySelectorAll('.scroll-animate');
+            const scrollObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        if (entry.target.querySelector('.typewriter')) {
+                           entry.target.querySelector('.typewriter').style.animationPlayState = 'running';
+                        }
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            scrollElements.forEach(el => {
+                const typewriter = el.querySelector('.typewriter');
+                if (typewriter) {
+                    typewriter.style.animationPlayState = 'paused';
+                }
+                scrollObserver.observe(el);
+            });
+
+
+            if (typeof YT === 'undefined' || typeof YT.Player === 'undefined') {
+                 setTimeout(setupVideoObservers, 1500);
+            } else {
+                 setupVideoObservers();
+            }
+            
+            // Lógica para Header y botón de volver arriba
+            const header = document.getElementById('main-header');
+            const backToTopButton = document.getElementById('back-to-top');
+            const progressCircle = document.querySelector('#back-to-top .progress-ring__circle');
+            const radius = progressCircle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+
+            progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+            progressCircle.style.strokeDashoffset = circumference;
+
+            function setProgress(percent) {
+                const offset = circumference - percent / 100 * circumference;
+                progressCircle.style.strokeDashoffset = offset;
+            }
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+
+                if (window.scrollY > 300) {
+                    backToTopButton.classList.remove('opacity-0', 'translate-y-4');
+                } else {
+                    backToTopButton.classList.add('opacity-0', 'translate-y-4');
+                }
+                
+                const scrollTop = window.scrollY;
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPercent = (scrollTop / docHeight) * 100;
+                setProgress(scrollPercent);
+            });
+
+            backToTopButton.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+            
+            // Lógica del menú móvil
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Lógica del Modal de Contraseña
+            const passwordModal = document.getElementById('password-modal');
+            const passwordInput = document.getElementById('password-input');
+            const passwordSubmit = document.getElementById('password-submit');
+            const passwordClose = document.getElementById('password-close');
+            const passwordError = document.getElementById('password-error');
+            const downloadButtons = document.querySelectorAll('.download-button');
+            let downloadUrl = '';
+
+            const correctPassword = 'TK2025';
+
+            downloadButtons.forEach(button => {
+                button.addEventListener('click', (e) => {
+                    downloadUrl = e.target.dataset.url;
+                    passwordModal.classList.remove('hidden');
+                });
+            });
+
+            const closeModal = () => {
+                passwordModal.classList.add('hidden');
+                passwordInput.value = '';
+                passwordError.textContent = '';
+            };
+
+            passwordClose.addEventListener('click', closeModal);
+            passwordSubmit.addEventListener('click', () => {
+                if (passwordInput.value === correctPassword) {
+                    window.open(downloadUrl, '_blank');
+                    closeModal();
+                } else {
+                    passwordError.textContent = 'Contraseña incorrecta. Inténtelo de nuevo.';
+                    passwordInput.value = '';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
